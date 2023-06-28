@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace BlogSite.Components.Pagination
+namespace BlogSite.Client.Pagination
 {
     public class PagingLink
     {

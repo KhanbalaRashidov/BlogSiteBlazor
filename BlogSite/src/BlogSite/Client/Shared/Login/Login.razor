@@ -1,0 +1,79 @@
+﻿@inject IAuthService AuthService
+@inject NavigationManager navigation
+
+<div class="modal fade zoom-in @ModalClass" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content" style="background: linear-gradient(87deg,#5e72e4,#825ee4) !important;">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title text-white w-100">Login</h5>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" @onclick="Close"></button>
+            </div>
+            <div class="modal-body bg-light text-primary">
+                @if (ShowErrors)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <p>@Error</p>
+                    </div>
+                }
+
+                <div class="card">
+                    <div class="card-body">
+                        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                            <DataAnnotationsValidator />
+
+                            <div class="form-group">
+                                <label for="email-name">Email or Username</label>
+                                <InputText Id="email-name" Class="form-control" @bind-Value="loginModel.EmailOrName" />
+                                <ValidationMessage For="@(() => loginModel.EmailOrName)" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="login-password">Password</label>
+                                <InputText Id="login-password" type="password" Class="form-control" @bind-Value="loginModel.Password" />
+                                <ValidationMessage For="@(() => loginModel.Password)" />
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary @submitButton">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                                    </svg>
+                                    <span class="fd">Login</span>
+                                </button>
+                                <a class="m-1" href="register">Register</a>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+<style>
+    .modal.fade .modal-dialog {
+        -webkit-transform: translate(0,0);
+        transform: translate(0,0);
+        height: 0;
+    }
+
+    .zoom-in {
+        transform: scale(0) !important;
+        opacity: 0;
+        -webkit-transition: .5s all 0s;
+        -moz-transition: .5s all 0s;
+        -o-transition: .5s all 0s;
+        transition: .5s all 0s;
+        display: block !important;
+    }
+
+        .zoom-in.show {
+            opacity: 1;
+            transform: scale(1) !important;
+            transform: none;
+        }
+</style>

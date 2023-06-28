@@ -1,0 +1,34 @@
+﻿using Microsoft.AspNetCore.Components.Forms;
+using System.ComponentModel.DataAnnotations;
+
+namespace BlogSite.Client.Utils.File
+{
+    public class FileValidationAttribute : ValidationAttribute
+    {
+        public FileValidationAttribute(string[] allowedExtensions)
+        {
+            AllowedExtensions = allowedExtensions;
+        }
+
+
+        private string[] AllowedExtensions { get; }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var file = (IBrowserFile)value;
+
+            if (file != null)
+            {
+                var extension = Path.GetExtension(file.Name);
+                if (!AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
+                {
+                    return new ValidationResult($"This file must contains this formats:{string.Join(", ", AllowedExtensions)}",
+                        new[] { validationContext.MemberName });
+                }
+            }
+
+
+            return ValidationResult.Success;
+        }
+    }
+}

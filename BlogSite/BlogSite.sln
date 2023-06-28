@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSite.Data", "src\BlogSi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSite.Service", "src\BlogSite.Service\BlogSite.Service.csproj", "{F3E42C67-A7C8-465C-962A-07BCF918164C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSite.Components", "src\BlogSite.Components\BlogSite.Components.csproj", "{D83F2F1C-BEA7-4FFD-8516-D64298F8E8E5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{F3E42C67-A7C8-465C-962A-07BCF918164C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3E42C67-A7C8-465C-962A-07BCF918164C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3E42C67-A7C8-465C-962A-07BCF918164C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D83F2F1C-BEA7-4FFD-8516-D64298F8E8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D83F2F1C-BEA7-4FFD-8516-D64298F8E8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D83F2F1C-BEA7-4FFD-8516-D64298F8E8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D83F2F1C-BEA7-4FFD-8516-D64298F8E8E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

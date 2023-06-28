@@ -1,6 +1,6 @@
 ﻿using BlogSite.Shared.Features.Pagination;
 
-namespace BlogSite.Components.Pagination
+namespace BlogSite.Client.Pagination
 {
     public class PagingResponse<T> where T : class
     {

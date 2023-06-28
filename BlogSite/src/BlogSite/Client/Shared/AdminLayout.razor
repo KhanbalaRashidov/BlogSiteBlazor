@@ -1,0 +1,93 @@
+﻿@using AntDesign;
+@inherits LayoutComponentBase
+
+@*<AuthorizeView Policy="@Policies.IsAdmin">
+    <Authorized>*@
+
+
+<Layout Style="min-height: 100vh; ">
+    <Sider Breakpoint="@BreakpointType.Lg"
+           CollapsedWidth="0"
+           OnBreakpoint="broken => {}"
+           OnCollapse="collapsed => {}">
+        <div class="logo" />
+        <div class="text-white p-2">
+            @*<Avatar Size="large" Icon="user" Src="@context.User.FindFirst("avatar_path").Value" />
+                <span class="nav-text">
+                    @context.User.Identity.Name
+                </span>*@
+            <Avatar Size="large" Icon="user" Src="/images/logo/asp.png" />
+            <span>
+                UserName
+            </span>
+        </div>
+        <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline">
+            <MenuItem RouterLink="panel/dashboard">
+                <i class="bi bi-house"></i>
+                Dashboard
+            </MenuItem>
+            <MenuItem RouterLink="panel/users">
+                <i class="bi bi-people"></i>
+                Users
+            </MenuItem>
+            @{
+                RenderFragment sub1Title =
+                @<span>
+                    <i class="bi bi-file-earmark-ruled"></i>
+                    Posts
+                </span>;
+            }
+            <SubMenu TitleTemplate=sub1Title>
+                <MenuItem RouterLink="panel/article">
+                    <i class="bi bi-receipt-cutoff"></i>
+                    Articles
+                </MenuItem>
+                <MenuItem RouterLink="panel/tags">
+                    <i class="bi bi-tags"></i>
+                    Tags
+                </MenuItem>
+            </SubMenu>
+            <MenuItem RouterLink="/">
+                <i class="bi bi-arrow-bar-left text-danger"></i>
+                <span class="text-danger">Back to the Home</span>
+            </MenuItem>
+        </Menu>
+    </Sider>
+    <Layout>
+        <Content Style="margin: 24px 16px 0;">
+            @Body
+        </Content>
+    </Layout>
+</Layout>
+@*</Authorized>
+    </AuthorizeView>*@
+<style>
+    #components-layout-demo-responsive .logo {
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px;
+    }
+
+    .site-layout-sub-header-background {
+        background: #fff;
+    }
+
+    .site-layout-background {
+        background: #fff;
+    }
+
+    .ant-menu-item > a {
+        text-decoration: none;
+    }
+</style>
+
+@code {
+    //bool collapsed = false;
+    bool collapsed;
+
+    void onCollapse(bool collapsed)
+    {
+        Console.WriteLine(collapsed);
+        this.collapsed = collapsed;
+    }
+}

@@ -1,11 +1,7 @@
 ﻿using BlogSite.Shared.Features.Pagination;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BlogSite.Components.Pagination
+namespace BlogSite.Client.Pagination
 {
     public partial class PostPagination
     {
@@ -19,12 +15,12 @@ namespace BlogSite.Components.Pagination
 
         private List<PagingLink> _links;
 
-        protected override  void OnParametersSet()
+        protected override void OnParametersSet()
         {
-             CreatePaginationLinks();
+            CreatePaginationLinks();
         }
 
-        private void  CreatePaginationLinks()
+        private void CreatePaginationLinks()
         {
             _links = new List<PagingLink>();
             _links.Add(new PagingLink(Paging.CurrentPage - 1, Paging.HasPrevious, null, prevIcon));
