@@ -1,3 +1,4 @@
+using BlogSite.Server.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace BlogSite
@@ -9,6 +10,13 @@ namespace BlogSite
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext(builder.Configuration);
+
+            builder.Services.AddIdentityOptions(builder.Configuration);
+
+            builder.Services.AddCustomServices();
+
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
