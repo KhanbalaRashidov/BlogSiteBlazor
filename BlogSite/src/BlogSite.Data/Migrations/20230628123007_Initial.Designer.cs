@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogSite.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230628074651_Initial")]
+    [Migration("20230628123007_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -221,7 +221,6 @@ namespace BlogSite.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RefreshToken")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RefreshTokenExpiryTime")
