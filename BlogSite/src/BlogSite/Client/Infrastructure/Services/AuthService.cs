@@ -28,7 +28,7 @@ namespace BlogSite.Client.Infrastructure.Services
 
         public async Task<RegisterResult> Register(RegisterModel registerModel)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/accounts/Register", registerModel);
+            var result = await _httpClient.PostAsJsonAsync("api/accounts/register", registerModel);
 
             return await result.Content.ReadFromJsonAsync<RegisterResult>();
         }

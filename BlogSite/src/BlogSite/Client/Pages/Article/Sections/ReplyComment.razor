@@ -1,0 +1,86 @@
+﻿@inject HttpClient http
+@using BlogSite.Shared.Dtos
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white w-100">@ModalTitle</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="Close"></button>
+            </div>
+            <div class="modal-body bg-light text-primary">
+                <EditForm Model="@Comment" OnValidSubmit="SendReply">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Name</label>
+                        <InputText type="text" class="form-control w-50 rounded-pill" @bind-Value="Comment.UserName" placeholder="Name" />
+                        <ValidationMessage For="@(() => Comment.UserName)" />
+                    </div> 
+                    <div class="form-group mt-3">
+                        <label for="exampleFormControlTextarea1">Comment Content</label>
+                        <InputTextArea class="form-control" @bind-Value="Comment.Content" rows="3"></InputTextArea>
+                        <ValidationMessage For="@(() => Comment.Content)" />
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" @onclick="Close">Close</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+    [Parameter] public RenderFragment CommentBody { get; set; }
+    [Parameter] public EventCallback OnReply { get; set; }
+    [Parameter] public string ModalTitle { get; set; }
+
+    public int ReplyId { get; set; }
+    public int? PostId { get; set; }
+
+    ReplyDTO Comment = new ReplyDTO();
+
+    async Task SendReply()
+    {
+        var Reply = new ReplyDTO
+        {
+            PostId = PostId,
+            ReplyId = ReplyId,
+            UserName = Comment.UserName,
+            Content = Comment.Content
+        };
+        await http.PostAsJsonAsync($"api/comments/{ReplyId}", Reply);
+        Close();
+    }
+
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+
+    public void Open(int repId, int? posId)
+    {
+        ReplyId = repId;
+        PostId = posId;
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+}

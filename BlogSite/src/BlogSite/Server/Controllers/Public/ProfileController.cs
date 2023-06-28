@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogSite.Server.Controllers.Public
 {
+    [ApiController]
+    [Route("api/posts")]
     public class ProfileController : ApiControllerBase
     {
         private readonly UserManager<User> _userManager;

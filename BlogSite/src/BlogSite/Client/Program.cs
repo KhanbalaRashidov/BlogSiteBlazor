@@ -19,7 +19,7 @@ namespace BlogSite.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient
-            { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }.EnableIntercept(sp));
+            { BaseAddress = new Uri("https://localhost:7075/") });
             //builder.Services.AddApiAuthorization();
 
             builder.Services.AddBlazoredLocalStorage();

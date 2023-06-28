@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSite.Server.Controllers.Public
 {
+    [ApiController]
+    [Route("api/accounts")]
     public class AccountsController : ApiControllerBase
     {
         private readonly UserManager<User> _userManager;

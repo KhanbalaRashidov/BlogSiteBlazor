@@ -1,0 +1,112 @@
+﻿@page "/panel/tags"
+@layout AdminLayout
+@inject HttpClient http
+@inject ModalService ModalService
+@*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
+
+<p class="h3 text-muted">Tags List</p>
+<button class="btn btn-primary btn-sm my-2" @onclick="AddModal">
+    <i class="bi bi-plus-lg"></i>
+    Add Tag
+</button>
+
+<div class="router-pagging-table">
+    <Table DataSource="@Tags" Class="text-center thead-light shadow-sm rounded">
+        <Column @bind-Field="@context.Id" Sortable />
+        <Column @bind-Field="@context.Name" Sortable />
+        <ActionColumn>
+            <Space>
+                <SpaceItem>
+                    <button class="btn btn-outline-dark btn-sm"
+                            @onclick="()=> ShowModal(context.Id, context.Name)">
+                        <i class="bi bi-pencil"></i>
+                        Edit
+                    </button>
+                </SpaceItem>
+            </Space>
+        </ActionColumn>
+    </Table>
+    <br />
+</div>
+
+<Modal Title="@("Add Tag")"
+       Visible="@_visibleAdd"
+       OnOk="@AddTag"
+       OnCancel="@CancelModal">
+    <input @bind="@Tag.Name" />
+</Modal>
+
+<Modal Title="@("Tag Name")"
+       Visible="@_visible"
+       OnOk="@UpdateTag"
+       OnCancel="@CancelModal">
+    <input @bind="@Tag.Name" />
+</Modal>
+
+<style>
+    .anticon {
+        vertical-align: 0;
+    }
+
+    .ant-table-wrapper {
+        max-width: 90%;
+    }
+</style>
+
+@code {
+    List<TagDTO> Tags = new List<TagDTO>();
+    TagDTO Tag = new TagDTO();
+    bool _visible = false;
+    bool _visibleAdd = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetTags();
+    }
+
+    async Task GetTags()
+    {
+        Tags = await http.GetFromJsonAsync<List<TagDTO>>(Endpoints.Tags);
+    }
+
+    async Task AddTag()
+    {
+        await http.PostAsJsonAsync(Endpoints.Tags, Tag);
+        await GetTags();
+        await Task.Delay(1000);
+        _visibleAdd = false;
+    }
+
+    async Task UpdateTag()
+    {
+        await http.PutAsJsonAsync(Endpoints.Tags + Tag.Id, Tag);
+        await GetTags();
+        await Task.Delay(1000);
+        Tag.Name = "";
+        _visible = false;
+    }
+
+    void AddModal()
+    {
+        _visibleAdd = true;
+    }
+
+    void ShowModal(int id, string name)
+    {
+        _visible = true;
+        Tag.Name = name;
+        Tag.Id = id;
+    }
+
+    void CancelModal()
+    {
+        _visible = false;
+        _visibleAdd = false;
+    }
+
+}
+
+
+
+
+

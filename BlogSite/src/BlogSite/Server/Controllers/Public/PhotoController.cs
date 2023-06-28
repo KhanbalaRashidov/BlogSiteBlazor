@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSite.Server.Controllers.Public
 {
+    [ApiController]
+    [Route("api/photo")]
     public class PhotoController : ApiControllerBase
     {
         private readonly IPhotoService _photoService;

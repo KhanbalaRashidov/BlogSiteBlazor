@@ -1,0 +1,92 @@
+﻿@page "/tag/{Name}"
+@inject HttpClient http
+@inject IPostService PostService
+@using BlogSite.Shared.Features.Pagination
+@using BlogSite.Client.Pagination
+
+@if (Posts == null)
+{
+    <Spinner />
+
+}
+else
+{
+    <div class="d-flex flex-nowrap ms-4 pt-3">
+        <div>
+            <p class="badge bg-light text-dark shadow-sm text-center">
+                <strong class="h6">
+                    <i class="bi bi-tags-fill pr-1"></i>
+                    tag
+                </strong>
+            </p>
+        </div>
+        <p class="badge bg-info shadow-sm text-center ms-2"><strong class="h6">@Name</strong></p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2">
+        @foreach (var post in Posts)
+        {
+            <div class="col mb-4">
+                <div class="article-card">
+                    @if (!string.IsNullOrEmpty(post.Image))
+                    {
+                        <img src="@post.Image" class="article-img" loading="lazy" />
+                    }
+                    else
+                    {
+                        <div class="article-img"></div>
+                    }
+                    <div class="article-body">
+                        <div class="article-title">
+                            <a href="@($"article/{post.Id}/{post.Slug}")" class="h5">
+                                @post.Title
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            @foreach (var tag in post.Tags)
+                            {
+                                <a href="@($"tag/{tag.Name}")">
+                                    <AntDesign.Tag Color="purple">
+                                        @tag.Name
+                                    </AntDesign.Tag>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row mt-5 justify-content-center">
+        <PostPagination Url="@($"tag/{Name}")" Paging="Paging" Spread="3" SelectedPage="SelectedPage" />
+    </div>
+}
+
+@code {
+    public List<PostDTO> Posts;
+    [Parameter] public string Name { get; set; }
+
+    public Paging Paging { get; set; } = new Paging();
+    private PostParameters _postParameters = new PostParameters();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await http.GetFromJsonAsync<List<PostDTO>>(Endpoints.Posts + Name);
+
+        await GetPostByTag(Name);
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        _postParameters.PageNumber = page;
+        await GetPostByTag(Name);
+    }
+
+    public async Task GetPostByTag(string name)
+    {
+        var pagingPost = await PostService.GetPostsByTag(_postParameters, name);
+        Posts = pagingPost.Items;
+        Paging = pagingPost.Paging;
+    }
+}

@@ -1,0 +1,158 @@
+@page "/article/{Id:int}/{Slug}"
+@using System.Net.Http
+@using BlogSite.Client.Pages.Article.Sections
+@inject HttpClient http
+@inject NavigationManager NavigationManager
+
+@if (Post == null)
+{
+    <Spinner />
+}
+else
+{
+    <div class="card m-3">
+        <div class="header-container">
+            @if (!string.IsNullOrEmpty(Post.Image))
+            {
+                <img src="@Post.Image" class="img-article" />
+            }
+            else
+            {
+                <div class="empty-img"></div>
+            }
+            <h5 class="card-title">@Post.Title</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center position-relative" style="transform: translate(20px, -40px);">
+                <div class="mt-2">
+
+                    <!--<AuthorizeView Policy="@Policies.IsAdmin">
+                        <a type="button" class="btn btn-secondary btn-sm shadow"
+                           href=@($"/article/edit/{Post.Id}/{Slug}")>-->
+                    @*<Icon Type="edit" Theme="outline" />*@
+                    <!--</a>
+                    <a type="button" class="btn btn-danger btn-sm text-white shadow ml-2"
+                       @onclick="(() => Delete.Open(Post.Id))">-->
+                    @*<Icon Type="close" Theme="outline" />*@
+                    <!--</a>
+                    </AuthorizeView>-->
+                    <a type="button" class="btn btn-secondary btn-sm shadow"
+                       href=@($"/article/edit/{Post.Id}/{Slug}")>
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <a type="button" class="btn btn-danger btn-sm text-white shadow ms-2"
+                       @onclick="(() => Delete.Open(Post.Id))">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+
+                </div>
+                <div>
+                    <span class="badge bg-light text-dark shadow-sm me-2">
+                        @*<Icon Type="wechat" Theme="outline" />*@
+                        <i class="bi bi-chat-right-fill"></i>
+                        @*@Comments.Length*@
+                        @Comments.Count()
+                    </span>
+                    <span class="badge bg-light text-dark shadow-sm me-2">Date: @Post.Created </span>
+                </div>
+            </div>
+            <div class="card-text p-4">
+                @((MarkupString)Post.Content)
+            </div>
+            <div class="mt-4">
+                @foreach (var tag in Post.Tags)
+                {
+                    <a href="@($"tag/{tag.Name}")">
+                        <AntDesign.Tag Color="blue">
+                            @tag.Name
+                        </AntDesign.Tag>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column text-white">
+        <AddComment PostId="@Post.Id"></AddComment>
+        <div class="comments-container m-3 p-3 rounded-start bg-light">
+            <h1>Comments</h1>
+            <ul id="comments-list" class="comments-list">
+                @foreach (var comment in Comments)
+                {
+                    <li>
+                        <div class="comment-main-level">
+                            <!-- Avatar -->
+                            <div class="comment-avatar"></div>
+                            <!-- Comment Container -->
+                            <div class="comment-box">
+                                <div class="comment-head">
+                                    <h6 class="comment-name">@comment.UserName</h6>
+                                    @*<AuthorizeView Policy="@Policies.IsAdmin">
+                                        </AuthorizeView>*@
+                                    <i class="bi bi-x-lg btn btn-danger p-1 text-light shadow" @onclick="() => DeleteCommment(comment.Id)" />
+                                    <i class="bi bi-pencil-fill btn btn-info p-1 text-light shadow" @onclick="() => GetCommentById(comment.Id)" />
+                                    <i class="bi bi-arrow-90deg-down p-1" @onclick="(() => ReplyComment.Open(comment.Id, comment.PostId))" />
+                                    <span class="float-start">@comment.Created</span>
+                                </div>
+                                <div class="comment-content">
+                                    @comment.Content
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach (var rep in comment.Replies.Where(s => s.ReplyId == comment.Id).ToList())
+                        {
+                            <!-- Comments reply -->
+                            <ul class="comments-list reply-list">
+                                <li>
+                                    <!-- Avatar -->
+                                    <div class="comment-avatar"></div>
+                                    <!-- Comment Container -->
+                                    <div class="comment-box">
+                                        <div class="comment-head">
+                                            <h6 class="comment-name">@rep.UserName</h6>
+                                            @*<AuthorizeView Policy="@Policies.IsAdmin">
+                                                </AuthorizeView>*@
+                                            <i class="bi bi-x-lg btn btn-danger p-1 text-light shadow" @onclick="() => DeleteCommment(rep.Id)" />
+                                            <i class="bi bi-pencil-fill btn btn-info p-1 text-light shadow" @onclick="() => GetCommentById(rep.Id)" />
+                                            <span class="float-start">@comment.Created</span>
+                                        </div>
+
+                                        <div class=" comment-content">
+                                            @rep.Content
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+}
+
+
+<UpateComment @ref="UpateComment" ModalTitle="Edit Comment">
+    <CommentBody>
+        <EditForm Model="@Comment" OnValidSubmit="@EditComment">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <InputText type="text" class="form-control w-50 rounded-pill" @bind-Value="Comment.UserName"/>
+            </div> 
+            <div class="form-group mt-3">
+                <label for="exampleFormControlTextarea1">Content</label>
+                <InputTextArea class="form-control" @bind-Value="Comment.Content" rows="3"></InputTextArea>
+            </div>
+            <div class="mt-4">
+            <button type="submit" class="btn btn-success" data-dismiss="@closeModal">Save</button>
+            <button type="button" class="btn btn-secondary">Close</button>
+            </div>
+        </EditForm>
+    </CommentBody>
+</UpateComment>
+
+<ReplyComment @ref="ReplyComment" ModalTitle="Reply to"></ReplyComment>
+<Delete @ref="Delete" ModalTitle="Delete Article"></Delete>

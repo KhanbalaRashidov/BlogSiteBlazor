@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 
 namespace BlogSite.Server.Controllers.Public
 {
+    [ApiController]
+    [Route("api/posts")]
     public class PostsController : ApiControllerBase
     {
         private readonly IPostService _postService;

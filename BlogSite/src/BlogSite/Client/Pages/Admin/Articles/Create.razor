@@ -1,0 +1,74 @@
+﻿@page "/article/add"
+@inject HttpClient http
+@layout AdminLayout
+@inject NavigationManager navigation
+@*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
+
+<span class="text-dark rounded ms-3 h2 font-weight-bold">
+    Write a new article
+    <i class="bi bi-file-earmark-post-fill"></i>
+</span>
+
+<div class="m-3 mt-4 shadow-sm rounded bg-light p-2">
+    <br />
+    <EditForm EditContext="editContext" OnValidSubmit="AddArticle" OnInvalidSubmit="TagSubmit">
+        <DataAnnotationsValidator />
+        <div class="col-md-6">
+            <InputText type="text" class="form-control rounded" @bind-Value="Post.Title" placeholder="Article Title" />
+            <ValidationMessage For="@(() => Post.Title)" />
+        </div>
+        <br />
+
+        <div class="form-group">
+            @if (disableUpload)
+            {
+                <label for="input" class="btn btn-secondary rounded-pill">
+                    <i class="bi bi-cloud-upload pe-2 align-middle"></i>Upload Image
+                </label>
+            }
+            <InputFile id="input" OnChange="@OnChangeImage" class="form-control" hidden accept=".png, .jpg" />
+            <ValidationMessage For="() => Post.Picture" />
+
+            @if (ImgUrl != null)
+            {
+                <div class="d-flex flex-row col-md-6 shadow border border-secondary bg-light rounded mt-2">
+                    <img class="m-2" src="@ImgUrl" style="width:60px; height: 40px;" />
+                    <p class="p-2 mt-2 text-success overflow-hidden text-nowrap">@Post.FileName</p>
+                </div>
+            }
+        </div>
+
+        <div class="mt-4">
+            <Select Mode="multiple"
+                    Style="width: 30%"
+                    @bind-Values="@_selectedValues"
+                    TItemValue="string"
+                    TItem="string"
+                    Placeholder="Enter tag"
+                    OnSelectedItemsChanged="OnSelectedItemsChangedHandler">
+                <SelectOptions>
+                    @foreach (var tag in Tags)
+                    {
+                        <SelectOption TItemValue="string" TItem="string" Value=@tag.Id.ToString() Label=@tag.Name />
+                    }
+                </SelectOptions>
+            </Select>
+            @if (isTagValid == false)
+            {
+                <div class="me-2">
+                    <div class="validation-message">tag is empty</div>
+                </div>
+            }
+
+        </div>
+
+        <div class="mt-5">
+            <InputTextArea @bind-Value="@Post.Content" class="form-control" Placeholder="Enter article text" />
+            <ValidationMessage For="@(() => Post.Content)" />
+        </div>
+
+        <button type="submit" class="@button mt-4" disabled="@disable">Save</button>
+    </EditForm>
+</div>
+
+

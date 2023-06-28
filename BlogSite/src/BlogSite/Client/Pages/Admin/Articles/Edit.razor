@@ -1,0 +1,104 @@
+﻿@page "/article/edit/{Id:int}/{Slug}"
+@inject HttpClient http
+@inject NavigationManager navigation
+@*@attribute [Authorize(Policy = Policies.IsAdmin)]*@
+
+<span class="text-dark rounded ms-3 h2 font-weight-bold">
+    Edit Article
+    <i class="bi bi-pencil-fill"></i>
+</span>
+<div class="m-3 mt-4 shadow-sm rounded bg-light p-2">
+    <br />
+    <EditForm EditContext="editContext" OnValidSubmit="UpdateArticle">
+        <DataAnnotationsValidator />
+
+        <div class="col-md-6">
+            <InputText type="text" class="form-control rounded" @bind-Value="@Post.Title" placeholder="Article title" />
+            <ValidationMessage For="@(() => Post.Title)" />
+        </div>
+        <br />
+
+        @if (!string.IsNullOrEmpty(Post.Image))
+        {
+            <div class="@invisibleSrc">
+                <label for="input" class="badge bg-danger rounded-circle p-1" style="transform: translate(110px, -40px);"
+                   @onclick="() => DeleteImage(Post.Image)">
+                    <span class="text-center">X</span>
+                </label>
+                <img src="@Post.Image" class="shadow mb-3" width="100" height="70" />
+            </div>
+
+        }
+        else
+        {
+            <div class="form-group @visibleUpload">
+                @if (disableUpload)
+                {
+                    <label for="input" class="btn btn-secondary rounded-pill">
+                        <i class="bi bi-cloud-upload pe-2 align-middle"></i>Upload Image
+                    </label>
+                }
+                <InputFile id="input" OnChange="@OnChangeImage" @bind-Value="@Post.Picture" class="form-control" hidden accept=".png, .jpg" />
+                <ValidationMessage For="@(() => Post.Picture)" />
+
+                @if (ImgUrl != null)
+                {
+                    <div class="d-flex flex-row col-md-6 shadow border border-secondary bg-light rounded mt-2">
+                        <img class="m-2" src="@ImgUrl" style="width:60px; height: 40px;" />
+                        <p class="p-2 mt-2 text-success overflow-hidden text-nowrap">@Post.FileName</p>
+                    </div>
+                }
+            </div>
+        }
+
+        @{
+            RenderFragment noContent =@<Icon Class="text-danger" Type="exclamation-circle" Theme="outline" />;
+        }
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-6">
+                    <Select Mode="multiple"
+                            Style="width: 80%"
+                            Placeholder="delete tag"
+                            @bind-Values="@delTagId"
+                            HideSelected="true"
+                            TItemValue="int"
+                            TItem="string"
+                            NotFoundContent=@noContent
+                            Disabled=@disable>
+                        <SelectOptions>
+                            @foreach (var tag in PostTags.Tags)
+                            {
+                                <SelectOption TItemValue="int" TItem="string" Value=@tag.Id Label=@tag.Name />
+                            }
+                        </SelectOptions>
+                    </Select>
+                </div>
+                <div class="col-6">
+                    <Select Mode="multiple"
+                            Placeholder="Add tag"
+                            Style="width: 80%"
+                            @bind-Values="@addTagId"
+                            NotFoundContent=@noContent
+                            TItemValue="int"
+                            TItem="string"
+                            Disabled=@disable>
+                        <SelectOptions>
+                            @foreach (var tag in Tags)
+                            {
+                                <SelectOption TItemValue="int" TItem="string" Value=@tag.Id Label=@tag.Name />
+                            }
+                        </SelectOptions>
+                    </Select>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <InputTextArea @bind-Value="@Post.Content" class="form-control" Placeholder="Enter article text" />
+            <ValidationMessage For="@(() => Post.Content)" />
+        </div>
+
+        <button type="submit" class="@button mt-4" disabled="@disable">Save</button>
+    </EditForm>
+</div>
