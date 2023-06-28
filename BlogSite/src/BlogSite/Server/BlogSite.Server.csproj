@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BlogSite.Service\BlogSite.Service.csproj" />
+    <ProjectReference Include="..\..\BlogSite.Data\BlogSite.Data.csproj" />
+    <ProjectReference Include="..\..\BlogSite.Entities\BlogSite.Entities.csproj" />
+    <ProjectReference Include="..\..\BlogSite.Service\BlogSite.Service.csproj" />
     <ProjectReference Include="..\Client\BlogSite.Client.csproj" />
     <ProjectReference Include="..\Shared\BlogSite.Shared.csproj" />
   </ItemGroup>

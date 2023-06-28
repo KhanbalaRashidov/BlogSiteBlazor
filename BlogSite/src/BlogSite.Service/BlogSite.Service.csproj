@@ -14,9 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BlogSite.Data\BlogSite.Data.csproj" />
-    <ProjectReference Include="..\src\BlogSite.Entities\BlogSite.Entities.csproj" />
-    <ProjectReference Include="..\src\BlogSite\Shared\BlogSite.Shared.csproj" />
+    <ProjectReference Include="..\BlogSite.Data\BlogSite.Data.csproj" />
+    <ProjectReference Include="..\BlogSite\Shared\BlogSite.Shared.csproj" />
   </ItemGroup>
 
 </Project>
