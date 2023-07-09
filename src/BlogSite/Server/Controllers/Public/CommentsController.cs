@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogSite.Server.Controllers.Public
 {
-    [ApiController]
+    //[ApiController]
     [Route("api/comments")]
     public class CommentsController : ApiControllerBase
     {

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace BlogSite.Server.Controllers.Public
 {
-    [ApiController]
+   // [ApiController]
     [Route("api/posts")]
     public class PostsController : ApiControllerBase
     {

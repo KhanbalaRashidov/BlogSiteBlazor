@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogSite.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230628123007_Initial")]
+    [Migration("20230628175300_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -42,7 +42,6 @@ namespace BlogSite.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("PostId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("ReplyId")
@@ -55,7 +54,6 @@ namespace BlogSite.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
@@ -85,14 +83,12 @@ namespace BlogSite.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -164,7 +160,6 @@ namespace BlogSite.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -182,7 +177,6 @@ namespace BlogSite.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -357,9 +351,7 @@ namespace BlogSite.Data.Migrations
                 {
                     b.HasOne("BlogSite.Entities.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.HasOne("BlogSite.Entities.Comment", "ParentComment")
                         .WithMany("Replies")

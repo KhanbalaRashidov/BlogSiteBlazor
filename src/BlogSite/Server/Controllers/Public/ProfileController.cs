@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogSite.Server.Controllers.Public
 {
-    [ApiController]
+   // [ApiController]
     [Route("api/posts")]
     public class ProfileController : ApiControllerBase
     {

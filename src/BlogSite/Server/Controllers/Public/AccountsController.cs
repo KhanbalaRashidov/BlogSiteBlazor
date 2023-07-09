@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSite.Server.Controllers.Public
 {
-    [ApiController]
+    //[ApiController]
     [Route("api/accounts")]
     public class AccountsController : ApiControllerBase
     {

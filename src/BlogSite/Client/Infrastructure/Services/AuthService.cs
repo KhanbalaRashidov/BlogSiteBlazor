@@ -28,14 +28,14 @@ namespace BlogSite.Client.Infrastructure.Services
 
         public async Task<RegisterResult> Register(RegisterModel registerModel)
         {
-            var result = await _httpClient.PostAsJsonAsync("accounts/register", registerModel);
+            var result = await _httpClient.PostAsJsonAsync("api/accounts/register", registerModel);
 
             return await result.Content.ReadFromJsonAsync<RegisterResult>();
         }
 
         public async Task<LoginResult> Login(LoginModel loginModel)
         {
-            var result = await _httpClient.PostAsJsonAsync("accounts/Login", loginModel);
+            var result = await _httpClient.PostAsJsonAsync("api/accounts/Login", loginModel);
             var loginResult = await result.Content.ReadFromJsonAsync<LoginResult>();
 
             if (!result.IsSuccessStatusCode)

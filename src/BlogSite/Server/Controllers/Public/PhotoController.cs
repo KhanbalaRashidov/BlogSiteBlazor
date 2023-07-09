@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSite.Server.Controllers.Public
 {
-    [ApiController]
+   // [ApiController]
     [Route("api/photo")]
     public class PhotoController : ApiControllerBase
     {
